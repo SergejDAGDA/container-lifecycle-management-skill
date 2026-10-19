@@ -25,7 +25,7 @@ from fixture_backup import capture_fixture, restore_fixture, seed_fixture, verif
 from restic_fixture import ResticFixture, TEST_MARKER
 
 # Pure contract code only. No mutation executor or production backup interface.
-SKILL_SCRIPTS = Path(__file__).resolve().parents[2] / "skills" / "maintain-server-containers" / "scripts"
+SKILL_SCRIPTS = Path(__file__).resolve().parents[2] / "skills" / "container-lifecycle-management" / "scripts"
 sys.path.insert(0, str(SKILL_SCRIPTS))
 from recovery_contract import validate_checkpoint, validate_recovery_set, plan_retention_dry_run  # noqa: E402
 from migration_contract import evaluate_image_only_rollback  # noqa: E402

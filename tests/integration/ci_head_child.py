@@ -16,7 +16,7 @@ from pathlib import Path
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "skills" / "maintain-server-containers" / "scripts"))
+sys.path.insert(0, str(ROOT / "skills" / "container-lifecycle-management" / "scripts"))
 from current_anchor_source_contract import CLAIM, SCHEMA, canonical_head  # noqa: E402
 
 FIELDS = frozenset({
