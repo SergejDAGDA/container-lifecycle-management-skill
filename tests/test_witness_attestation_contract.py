@@ -19,7 +19,7 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
 
 HERE = Path(__file__).resolve().parent
-sys.path.insert(0, str(HERE.parent / "skills" / "maintain-server-containers" / "scripts"))
+sys.path.insert(0, str(HERE.parent / "skills" / "container-lifecycle-management" / "scripts"))
 sys.path.insert(0, str(HERE))
 from test_storage_provider_contract import scenario  # noqa: E402
 from recovery_contract import validate_recovery_set  # noqa: E402

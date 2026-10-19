@@ -6,7 +6,7 @@ import sys
 import unittest
 from pathlib import Path
 
-SKILL = Path(__file__).resolve().parents[1] / "skills" / "maintain-server-containers" / "scripts"
+SKILL = Path(__file__).resolve().parents[1] / "skills" / "container-lifecycle-management" / "scripts"
 sys.path.insert(0, str(SKILL))
 from recovery_contract import validate_recovery_set  # noqa: E402
 from storage_provider_contract import (  # noqa: E402
