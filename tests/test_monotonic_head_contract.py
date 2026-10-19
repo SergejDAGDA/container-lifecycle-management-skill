@@ -13,7 +13,7 @@ from pathlib import Path
 from threading import Barrier
 
 HERE = Path(__file__).resolve().parent
-sys.path.insert(0, str(HERE.parent / "skills" / "maintain-server-containers" / "scripts"))
+sys.path.insert(0, str(HERE.parent / "skills" / "container-lifecycle-management" / "scripts"))
 sys.path.insert(0, str(HERE / "integration"))
 from ci_monotonic_fixture import bootstrap_test_only  # noqa: E402
 from monotonic_head_contract import SyntheticMonotonicJournal  # noqa: E402
