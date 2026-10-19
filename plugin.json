@@ -7,8 +7,8 @@
     "name": "Sergej DAGDA",
     "url": "https://github.com/SergejDAGDA"
   },
-  "homepage": "https://github.com/SergejDAGDA/agent-maintain-server-containers",
-  "repository": "https://github.com/SergejDAGDA/agent-maintain-server-containers",
+  "homepage": "https://github.com/SergejDAGDA/container-lifecycle-management-skill",
+  "repository": "https://github.com/SergejDAGDA/container-lifecycle-management-skill",
   "license": "MIT",
   "keywords": [
     "docker",
@@ -21,8 +21,8 @@
   ],
   "skills": "./skills/",
   "interface": {
-    "displayName": "Maintain Server Containers",
-    "shortDescription": "Audit, install, rebuild and update Docker Compose services",
+    "displayName": "Docker Container Lifecycle Management",
+    "shortDescription": "Audit, deploy, update, rebuild and recover Docker Compose applications",
     "developerName": "Sergej DAGDA",
     "category": "Developer Tools",
     "capabilities": [

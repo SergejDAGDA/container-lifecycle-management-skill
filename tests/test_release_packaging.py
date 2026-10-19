@@ -20,6 +20,24 @@ class PublicReleasePackagingTests(unittest.TestCase):
                      "references/maintenance-protocol.md"):
             self.assertTrue((SKILL / path).is_file(), path)
 
+    def test_repository_identity_metadata_and_compatibility_contract(self):
+        canonical = "https://github.com/SergejDAGDA/container-lifecycle-management-skill"
+        native = json.loads((ROOT / "plugin.json").read_text(encoding="utf-8"))
+        claude = json.loads((ROOT / ".claude-plugin/plugin.json").read_text(encoding="utf-8"))
+        market = json.loads((ROOT / ".agents/plugins/marketplace.json").read_text(encoding="utf-8"))
+        self.assertEqual(market["name"], "container-lifecycle-management-skill")
+        self.assertEqual(market["plugins"][0]["source"]["url"], canonical + ".git")
+        self.assertEqual(native["name"], "maintain-server-containers")
+        self.assertEqual(claude["name"], "maintain-server-containers")
+        self.assertEqual(market["plugins"][0]["name"], "maintain-server-containers")
+        for manifest in (native, claude):
+            self.assertEqual(manifest["repository"], canonical)
+            self.assertEqual(manifest["homepage"], canonical)
+        self.assertIn(
+            'API = "maintain-server-containers/safety-adapter/v1"',
+            (SKILL / "scripts/safety_adapter.py").read_text(encoding="utf-8"),
+        )
+
     def test_release_notes_and_changelog_are_consistent(self):
         notes = (ROOT / "docs/releases/v0.4.0.md").read_text(encoding="utf-8")
         change = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")

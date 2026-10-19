@@ -4,13 +4,15 @@
 
 **A reusable Agent Skill for policy-driven Docker application lifecycle management: installation, deployment, updates, backup/recovery and controlled rebuilds across local and remote environments.**
 
-Repository: `agent-maintain-server-containers`
+GitHub repository: `SergejDAGDA/container-lifecycle-management-skill`
 
 Installed skill name: `maintain-server-containers`
 
-Invocation: `$maintain-server-containers`
+Invocation for published v0.5.1: `$maintain-server-containers`.
 
-**Published releases:** check the [GitHub Releases page](https://github.com/SergejDAGDA/agent-maintain-server-containers/releases); the installable package version is declared in `skills/maintain-server-containers/VERSION` and both plugin manifests. Updating a separately installed Agent Skill is an explicit action; publishing repository files does not automatically replace an existing installation. The bundled CLI can validate a portable project policy and run read-only policy/runtime audits, status and planning. The skill also defines the complete agent-operated upgrade workflow, but it does **not** ship a production mutation executor. Do not confuse a passing schema check with a verified safe deployment.
+**Naming migration:** the GitHub repository uses the platform-neutral `-skill` suffix and a lifecycle-oriented name. The published v0.5.1 payload still uses the historical `maintain-server-containers` Skill ID. A separate reviewed migration will introduce `container-lifecycle-management` (and `$container-lifecycle-management`). Do not treat the repository rename as installation or as an alias for the new Skill ID. The public safety-adapter API v1 remains `maintain-server-containers/safety-adapter/v1` for compatibility.
+
+**Published releases:** check the [GitHub Releases page](https://github.com/SergejDAGDA/container-lifecycle-management-skill/releases); the installable package version is declared in `skills/maintain-server-containers/VERSION` and both plugin manifests. Updating a separately installed Agent Skill is an explicit action; publishing repository files does not automatically replace an existing installation. The bundled CLI can validate a portable project policy and run read-only policy/runtime audits, status and planning. The skill also defines the complete agent-operated upgrade workflow, but it does **not** ship a production mutation executor. Do not confuse a passing schema check with a verified safe deployment.
 
 ## Architecture and security audit (13 October 2026)
 
@@ -45,7 +47,7 @@ operational safety from the experimental H31 tests.
 ## Install or update in Codex
 
 Follow the [version-pinned Codex update guide](docs/CODEX-INSTALL-UPDATE.md)
-and use the canonical skill folder from the [latest published release](https://github.com/SergejDAGDA/agent-maintain-server-containers/releases/latest).
+and use the canonical skill folder from the [latest published release](https://github.com/SergejDAGDA/container-lifecycle-management-skill/releases/latest).
 The installable folder contains a `VERSION` marker for exact-version checks.
 Updating a repository checkout or plugin marketplace **does not automatically
 replace an older user-scope skill**. Back up an existing installation and

@@ -6,8 +6,8 @@
     "name": "Sergej DAGDA",
     "url": "https://github.com/SergejDAGDA"
   },
-  "homepage": "https://github.com/SergejDAGDA/agent-maintain-server-containers",
-  "repository": "https://github.com/SergejDAGDA/agent-maintain-server-containers",
+  "homepage": "https://github.com/SergejDAGDA/container-lifecycle-management-skill",
+  "repository": "https://github.com/SergejDAGDA/container-lifecycle-management-skill",
   "license": "MIT",
   "keywords": [
     "docker",
