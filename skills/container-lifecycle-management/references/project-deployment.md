@@ -13,7 +13,7 @@ This is the **agent-run** workflow for `deploy-project <project>`. The bundled P
 
 ## Invocation and authorization
 
-`$maintain-server-containers deploy-project <project> [release-id]`
+`$container-lifecycle-management deploy-project <project> [release-id]`
 
 Select an existing **approved deployable** release, never merely the highest Git commit, latest local working tree or newest image tag. The project may publish source outside the server, use a private Git repository, CI build, local package or other accessible release source. If multiple releases fit, ask for the release identity once.
 

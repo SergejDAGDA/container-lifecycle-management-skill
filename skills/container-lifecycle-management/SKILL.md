@@ -1,11 +1,11 @@
 ---
-name: maintain-server-containers
+name: container-lifecycle-management
 description: Manage the Docker Compose application lifecycle across local, remote and server environments: audit, plan, install, deploy, update and recover services with project-owned policy and evidence-based state-preserving gates. Use for container version reviews, upgrade preparation, immutable image pinning, safe patch waves, rollback planning, controlled semi-automatic updates, explicitly authorized clean rebuilds of existing applications, explicit deployment of approved project-managed releases, and bounded first-time installation of third-party Git repositories with persistent-state safeguards. Never change unknown, externally managed, or migration-sensitive state merely because a newer image exists.
 ---
 
-# Maintain Server Containers
+# Container Lifecycle Management
 
-A portable Agent Skill for Docker Compose application lifecycle management, including installation, release deployment, updates, rebuilds, backups, recovery and state reconciliation. Its historical invocation `$maintain-server-containers` remains unchanged for compatibility; the workflow applies to local and remote Docker environments, not only dedicated servers. The project owns its deployment files, service policy and runtime state. The skill owns the reusable procedure. Do not embed instance-specific addresses, service names, passwords or paths in the skill.
+A portable Agent Skill for Docker Compose application lifecycle management, including installation, release deployment, updates, rebuilds, backups, recovery and state reconciliation. Invoke this version as `$container-lifecycle-management`. Versions up to v0.5.1 used `$maintain-server-containers`, which is historical and is not a runtime alias. The independent safety-adapter API `maintain-server-containers/safety-adapter/v1` remains unchanged for compatibility; the workflow applies to local and remote Docker environments, not only dedicated servers. The project owns its deployment files, service policy and runtime state. The skill owns the reusable procedure. Do not embed instance-specific addresses, service names, passwords or paths in the skill.
 
 ## Select an operation
 
@@ -41,9 +41,9 @@ If the user's intent is ambiguous, start with `audit`. Do not interpret "look at
 Before YAML validation, run `scripts/doctor.py --format json` using the **same Python interpreter** as `maintenance.py`. Use an existing reviewed local environment with PyYAML, or use a JSON policy (which needs no PyYAML). During a read-only audit, do not install dependencies on the inspected server. Then run:
 
 ```sh
-python skills/maintain-server-containers/scripts/maintenance.py --policy maintenance/services.yaml validate
-python skills/maintain-server-containers/scripts/maintenance.py --policy maintenance/services.yaml --live plan
-python skills/maintain-server-containers/scripts/maintenance.py --policy maintenance/services.yaml --live status
+python skills/container-lifecycle-management/scripts/maintenance.py --policy maintenance/services.yaml validate
+python skills/container-lifecycle-management/scripts/maintenance.py --policy maintenance/services.yaml --live plan
+python skills/container-lifecycle-management/scripts/maintenance.py --policy maintenance/services.yaml --live status
 ```
 
 The helper runs only read-only Docker `ps` and `inspect` and does not change application state. It supports the portable v1 schema and a read-only validator for namespaced `<project>-maintenance/v1` policies with richer project-owned state contracts, migration/rollback gates and groups. A semantically incomplete `complete` contract is a validation error, not an approval. An invalid portable or extended policy must not trigger `--live` Docker inspection. Selected runtime metadata are strictly typed; host/container network modes and mismatched Docker socket source/type cannot silently pass as normal Compose networking. When `--live` is used for such a policy, only selected Docker metadata is retrieved and compared; metadata matching never proves source reproducibility, backup restoration or application smoke. Other existing policies may require an explicit adapter. For extra global invariants, read [safety-adapter.md](references/safety-adapter.md): unknown rules fail closed unless a trusted, pre-registered, version/digest-matched adapter claims and validates every rule. The default bundled CLI does not auto-load project adapters or allow arbitrary YAML-specified imports; no adapter PASS can waive core safety requirements. A `GATED` or `CANDIDATE` classification never constitutes release, backup or rollback approval. If runtime/policy disagree, reconcile *before* update, not by blindly recreating containers.

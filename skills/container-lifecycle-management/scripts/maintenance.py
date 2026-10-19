@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Read-only policy checks for the maintain-server-containers Agent Skill.
+"""Read-only policy checks for the container-lifecycle-management Agent Skill.
 
 No command in this module changes Docker, Compose, images, files, or networks.
 A plan is not an authorization or proof of backup/recovery readiness.
