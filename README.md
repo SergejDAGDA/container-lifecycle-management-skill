@@ -1,4 +1,4 @@
-# Maintain Server Containers
+# Container Lifecycle Management
 
 [Русская версия](README.ru.md)
 
@@ -6,13 +6,13 @@
 
 GitHub repository: `SergejDAGDA/container-lifecycle-management-skill`
 
-Installed skill name: `maintain-server-containers`
+Installed Skill ID (v0.6.0 candidate): `container-lifecycle-management`
 
-Invocation for published v0.5.1: `$maintain-server-containers`.
+Invocation for candidate v0.6.0: `$container-lifecycle-management`.
 
-**Naming migration:** the GitHub repository uses the platform-neutral `-skill` suffix and a lifecycle-oriented name. The published v0.5.1 payload still uses the historical `maintain-server-containers` Skill ID. A separate reviewed migration will introduce `container-lifecycle-management` (and `$container-lifecycle-management`). Do not treat the repository rename as installation or as an alias for the new Skill ID. The public safety-adapter API v1 remains `maintain-server-containers/safety-adapter/v1` for compatibility.
+**Compatibility:** published versions through v0.5.1 used the installed Skill ID `$maintain-server-containers`; this is historical and **not** an alias for the new Skill ID. The safety-adapter API identity `maintain-server-containers/safety-adapter/v1` remains **unchanged** for existing SandBox-Server adapters. The GitHub repo was renamed independently; the candidate v0.6.0 is not published or installed until separately accepted.
 
-**Published releases:** check the [GitHub Releases page](https://github.com/SergejDAGDA/container-lifecycle-management-skill/releases); the installable package version is declared in `skills/maintain-server-containers/VERSION` and both plugin manifests. Updating a separately installed Agent Skill is an explicit action; publishing repository files does not automatically replace an existing installation. The bundled CLI can validate a portable project policy and run read-only policy/runtime audits, status and planning. The skill also defines the complete agent-operated upgrade workflow, but it does **not** ship a production mutation executor. Do not confuse a passing schema check with a verified safe deployment.
+**Published releases:** check the [GitHub Releases page](https://github.com/SergejDAGDA/container-lifecycle-management-skill/releases); the installable package version is declared in `skills/container-lifecycle-management/VERSION` and both plugin manifests. Updating a separately installed Agent Skill is an explicit action; publishing repository files does not automatically replace an existing installation. The bundled CLI can validate a portable project policy and run read-only policy/runtime audits, status and planning. The skill also defines the complete agent-operated upgrade workflow, but it does **not** ship a production mutation executor. Do not confuse a passing schema check with a verified safe deployment.
 
 ## Architecture and security audit (13 October 2026)
 
@@ -65,14 +65,14 @@ all hosts automatically or authorize changes.
 An initial real-world audit exposed an **interpreter dependency gap**:
 installing a skill does not install PyYAML into every Python interpreter.
 The skill now includes a standard-library-only
-[`scripts/doctor.py`](skills/maintain-server-containers/scripts/doctor.py).
+[`scripts/doctor.py`](skills/container-lifecycle-management/scripts/doctor.py).
 Run it with the same interpreter planned for `maintenance.py`.
 Prefer an existing **local** Codex virtual environment with PyYAML;
 do not install packages on the inspected server merely for a read-only audit.
 
-Backup assurance is a separate agent workflow: `backup-audit [service]` checks existing jobs and event-based checkpoints, per-service data/source coverage, retention and protected historical milestones, exact snapshot evidence, off-host independence and alert delivery **read-only**; `backup-verify <service>` tests an owner-authorized isolated restore. See [backup-control.md](skills/maintain-server-containers/references/backup-control.md). The skill does not install a backup scheduler, automatically delete snapshots or claim production restore success from synthetic CI.
+Backup assurance is a separate agent workflow: `backup-audit [service]` checks existing jobs and event-based checkpoints, per-service data/source coverage, retention and protected historical milestones, exact snapshot evidence, off-host independence and alert delivery **read-only**; `backup-verify <service>` tests an owner-authorized isolated restore. See [backup-control.md](skills/container-lifecycle-management/references/backup-control.md). The skill does not install a backup scheduler, automatically delete snapshots or claim production restore success from synthetic CI.
 
-A separate [Compose source preflight](skills/maintain-server-containers/scripts/compose_preflight.py)
+A separate [Compose source preflight](skills/container-lifecycle-management/scripts/compose_preflight.py)
 checks an explicit ordered list of Compose files **on the host where the
 files exist**. The optional `--render` flag invokes
 `docker compose config --quiet` after source/environment review;
@@ -125,7 +125,7 @@ The read-only helper deliberately does not pull images, change deployment files 
 For an agent that supports the Agent Skills directory format, clone the repository and install/copy only the canonical skill directory:
 
 ```text
-skills/maintain-server-containers/
+skills/container-lifecycle-management/
   SKILL.md
   agents/openai.yaml
   references/
@@ -139,17 +139,17 @@ For Codex, place that directory in the configured user or project skills locatio
 Python 3.10+ is required. For YAML policies, first check PyYAML in the **same** Python interpreter using the noninstalling doctor. Reuse an existing reviewed local environment. JSON policies do not need PyYAML. Do not install dependencies on an inspected server for a read-only audit.
 
 ```sh
-python skills/maintain-server-containers/scripts/doctor.py --format json
-python skills/maintain-server-containers/scripts/maintenance.py --policy examples/services.yaml validate
-python skills/maintain-server-containers/scripts/maintenance.py --policy examples/services.yaml plan
-python skills/maintain-server-containers/scripts/maintenance.py --policy examples/native-policy.yaml validate
+python skills/container-lifecycle-management/scripts/doctor.py --format json
+python skills/container-lifecycle-management/scripts/maintenance.py --policy examples/services.yaml validate
+python skills/container-lifecycle-management/scripts/maintenance.py --policy examples/services.yaml plan
+python skills/container-lifecycle-management/scripts/maintenance.py --policy examples/native-policy.yaml validate
 ```
 
 Read-only live metadata inspection:
 
 ```sh
-python skills/maintain-server-containers/scripts/maintenance.py --policy maintenance/services.yaml --live audit
-python skills/maintain-server-containers/scripts/maintenance.py --policy maintenance/services.yaml --live --format json status
+python skills/container-lifecycle-management/scripts/maintenance.py --policy maintenance/services.yaml --live audit
+python skills/container-lifecycle-management/scripts/maintenance.py --policy maintenance/services.yaml --live --format json status
 ```
 
 Note: options such as `--format` are top-level arguments and must appear before the operation name.
@@ -159,17 +159,17 @@ Note: options such as `--format` are top-level arguments and must appear before 
 ### Invoke in chat
 
 ```text
-$maintain-server-containers audit
+$container-lifecycle-management audit
 Inspect the Compose server and show me version, health and state risks. Do not make changes.
 ```
 
 ```text
-$maintain-server-containers plan
+$container-lifecycle-management plan
 Check authoritative upstream releases and prepare safe, grouped update candidates.
 ```
 
 ```text
-$maintain-server-containers update-auto
+$container-lifecycle-management update-auto
 Update services eligible under the project policy, preserving user data and performing all required checks and safe rollbacks. Skip every blocked or manual service.
 ```
 
@@ -182,7 +182,7 @@ The skill also defines `deploy-repository` for installing a new external applica
 into an existing Compose server, starting with an explicit Git repository URL:
 
 ```text
-$maintain-server-containers deploy-repository https://github.com/example-org/example-app
+$container-lifecycle-management deploy-repository https://github.com/example-org/example-app
 Set it up as an isolated Docker Compose application on my server, check its
 dependencies, state and network exposure, and register it for future maintenance.
 ```
@@ -204,7 +204,7 @@ A newly installed application defaults to `MANUAL` maintenance until an
 independent update-safety classification can be proven. Optional other
 Agent Skills never control whether core deployment can proceed.
 
-See [repository-deployment.md](skills/maintain-server-containers/references/repository-deployment.md)
+See [repository-deployment.md](skills/container-lifecycle-management/references/repository-deployment.md)
 for the first-install protocol. This is an **agent-operated workflow**;
 the bundled read-only CLI is not yet a production installer.
 
@@ -225,7 +225,7 @@ For a remote server, distinguish the management project's canonical
 non-secret sources from the actual server-side Compose/build files, verify
 their parity, and interpret bind paths on the **Docker daemon's host**.
 
-See [deployment-layouts.md](skills/maintain-server-containers/references/deployment-layouts.md)
+See [deployment-layouts.md](skills/container-lifecycle-management/references/deployment-layouts.md)
 for environment selection, source ownership, storage boundaries, SSH,
 Compose project names, secret handling and pre-deploy/acceptance receipts.
 These paths are portable **recommendations**, not Docker/FHS requirements
@@ -239,7 +239,7 @@ workflow rather than inventing an update or treating the service as a fresh
 `deploy-repository` installation:
 
 ```text
-$maintain-server-containers rebuild doc-processor
+$container-lifecycle-management rebuild doc-processor
 Replace its disposable models and job cache with a clean pinned installation.
 Preserve my personal documents and verify future update readiness.
 ```
@@ -258,7 +258,7 @@ reported, and the next update must be plan-ready from reproducible files.
 On rollback, restore the *active deployment source* as well as the image.
 After two failed acceptance attempts, stop patching and reconsider the approach.
 
-Read [clean-rebuild.md](skills/maintain-server-containers/references/clean-rebuild.md).
+Read [clean-rebuild.md](skills/container-lifecycle-management/references/clean-rebuild.md).
 This is an **agent workflow**, not a new Python CLI command; it does not make
 `update-auto` available for an invalid policy.
 
@@ -269,7 +269,7 @@ application project (including non-public repositories, packages and CI artifact
 outside the Docker host):
 
 ```text
-$maintain-server-containers deploy-project local-editor
+$container-lifecycle-management deploy-project local-editor
 Deploy the latest approved deployable release, validate the running application,
 and synchronize the authorized deployment record and project memory.
 ```
@@ -290,7 +290,7 @@ not a fabricated fully completed deployment.
 `MANUAL` requires a targeted authorized project workstream; `NO_TOUCH`
 **cannot** be bypassed by an ordinary `deploy-project` request.
 
-See [project-deployment.md](skills/maintain-server-containers/references/project-deployment.md)
+See [project-deployment.md](skills/container-lifecycle-management/references/project-deployment.md)
 and the [synthetic policy example](examples/project-managed.yaml).
 The bundled Python CLI validates optional `release_management` declarations,
 but **does not implement the deployment command**.
@@ -301,7 +301,7 @@ The consuming project owns `maintenance/services.yaml`. The public skill contain
 
 Portable v1 services can be declared with `services` as either a YAML list or a mapping. A candidate entry names its Compose project/service, image, explicit target, ownership, persistence contract, backup requirement, rollback class, health and smoke profile.
 
-Read [policy-schema.md](skills/maintain-server-containers/references/policy-schema.md) before using the schema in production. A pre-existing project-specific `services.yaml` is **not automatically compatible** merely because it has the same filename. Extra project-owned safety rules require the [trusted adapter contract](skills/maintain-server-containers/references/safety-adapter.md); the bundled CLI fails closed without an adapter and cannot import one from policy YAML.
+Read [policy-schema.md](skills/container-lifecycle-management/references/policy-schema.md) before using the schema in production. A pre-existing project-specific `services.yaml` is **not automatically compatible** merely because it has the same filename. Extra project-owned safety rules require the [trusted adapter contract](skills/container-lifecycle-management/references/safety-adapter.md); the bundled CLI fails closed without an adapter and cannot import one from policy YAML.
 
 
 ### Component names in dependency groups
@@ -309,7 +309,7 @@ Read [policy-schema.md](skills/maintain-server-containers/references/policy-sche
 For composite stacks, logical component names may differ from Compose service
 names. Declare explicit `component_aliases` in the **project policy**, rather
 than letting the agent guess. See
-[policy-schema.md](skills/maintain-server-containers/references/policy-schema.md)
+[policy-schema.md](skills/container-lifecycle-management/references/policy-schema.md)
 and [synthetic extended fixture](examples/native-policy.yaml). An unresolved
 member in a required update-as-group stack is a validation error and blocks
 automatic maintenance.
@@ -334,7 +334,7 @@ Before mutation, identify the exact volumes, bind mounts, accounts, databases, u
 
 An image ID/digest and a verified state restore are **different** rollback guarantees.
 
-See [maintenance-protocol.md](skills/maintain-server-containers/references/maintenance-protocol.md) for the complete process.
+See [maintenance-protocol.md](skills/container-lifecycle-management/references/maintenance-protocol.md) for the complete process.
 
 ## Trust and permissions
 
@@ -367,7 +367,7 @@ The proposals in [the development roadmap](docs/ROADMAP.md), [lifecycle/recovery
 ## Development
 
 ```sh
-python -m pip install -r skills/maintain-server-containers/scripts/requirements.txt
+python -m pip install -r skills/container-lifecycle-management/scripts/requirements.txt
 python -m unittest discover -s tests -v
 ```
 

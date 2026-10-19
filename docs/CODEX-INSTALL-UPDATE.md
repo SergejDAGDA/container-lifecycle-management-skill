@@ -1,3 +1,19 @@
+# Codex installation and Skill ID migration — Container Lifecycle Management
+
+## Proposed v0.6.0 migration (not yet published)
+
+1. Do not install from PRs or floating `main`. First verify the published non-draft GitHub Release, exact final tag-to-commit identity, package `VERSION`, plugin manifests and passing CI for the accepted revision.
+2. Preserve the existing `maintain-server-containers` v0.5.1 installed payload as an **inactive**, out-of-skill-root rollback snapshot before any replacement. Do not remove or overwrite it during repository rename.
+3. Install **only** `skills/container-lifecycle-management/` from the verified `v0.6.0` release to the approved skills root; no new or existing project, server, Docker container, persistent data or backup is modified by installation.
+4. Check that frontmatter `name: container-lifecycle-management`, `VERSION: 0.6.0` and `$container-lifecycle-management` all match. In a fresh Codex Desktop chat, perform a strictly read-only invocation; do not test a live operation.
+5. Only after passing the new identity test, retire the old **active** `maintain-server-containers` directory individually while retaining the rollback snapshot outside all active skills roots. Do not treat it as a runtime alias. Verify the old active directory is no longer discovered in another fresh chat.
+6. SandBox-Server's `maintain-server-containers/safety-adapter/v1` programmatic API remains unchanged. Migrate its project-local **skill calls** separately, without replacing this API or invoking Docker.
+7. Record installed package origin, exact release commit, active path, rollback path and any unverified environment boundaries.
+
+## Historical v0.5.0/v0.4.0 update procedures
+
+The following archival instructions intentionally use the old installed Skill ID, old release paths and their original version numbers. They document historical installations, **not** instructions to install the v0.6.0 candidate. Do not globally rewrite their paths or invoke them as a current migration procedure.
+
 # Codex installation and update — Maintain Server Containers v0.5.0 (publication pending)
 
 > This section supersedes the v0.4.0-only update target **after** v0.5.0 is published. Do not install from an unmerged PR, a floating branch, or an unpublished tag. The installed baseline remains v0.4.0 until a separately approved update.
