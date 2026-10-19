@@ -6,8 +6,8 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SKILL = ROOT / "skills" / "maintain-server-containers"
-VERSION = "0.5.1"
+SKILL = ROOT / "skills" / "container-lifecycle-management"
+VERSION = "0.6.0"
 
 
 class PublicReleasePackagingTests(unittest.TestCase):
@@ -27,9 +27,9 @@ class PublicReleasePackagingTests(unittest.TestCase):
         market = json.loads((ROOT / ".agents/plugins/marketplace.json").read_text(encoding="utf-8"))
         self.assertEqual(market["name"], "container-lifecycle-management-skill")
         self.assertEqual(market["plugins"][0]["source"]["url"], canonical + ".git")
-        self.assertEqual(native["name"], "maintain-server-containers")
-        self.assertEqual(claude["name"], "maintain-server-containers")
-        self.assertEqual(market["plugins"][0]["name"], "maintain-server-containers")
+        self.assertEqual(native["name"], "container-lifecycle-management")
+        self.assertEqual(claude["name"], "container-lifecycle-management")
+        self.assertEqual(market["plugins"][0]["name"], "container-lifecycle-management")
         for manifest in (native, claude):
             self.assertEqual(manifest["repository"], canonical)
             self.assertEqual(manifest["homepage"], canonical)
@@ -37,6 +37,15 @@ class PublicReleasePackagingTests(unittest.TestCase):
             'API = "maintain-server-containers/safety-adapter/v1"',
             (SKILL / "scripts/safety_adapter.py").read_text(encoding="utf-8"),
         )
+
+    def test_skill_id_migration_preserves_safety_adapter_api(self):
+        skill = (SKILL / "SKILL.md").read_text(encoding="utf-8")
+        agent = (SKILL / "agents/openai.yaml").read_text(encoding="utf-8")
+        self.assertTrue(skill.startswith("---\nname: container-lifecycle-management\n"))
+        self.assertIn("Use $container-lifecycle-management", agent)
+        self.assertFalse((ROOT / "skills/maintain-server-containers").exists())
+        adapter = (SKILL / "scripts/safety_adapter.py").read_text(encoding="utf-8")
+        self.assertIn('API = "maintain-server-containers/safety-adapter/v1"', adapter)
 
     def test_release_notes_and_changelog_are_consistent(self):
         notes = (ROOT / "docs/releases/v0.4.0.md").read_text(encoding="utf-8")

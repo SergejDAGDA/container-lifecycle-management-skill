@@ -1,4 +1,4 @@
-# Maintain Server Containers
+# Container Lifecycle Management
 
 [English version](README.md)
 
@@ -6,13 +6,13 @@
 
 GitHub-репозиторий: `SergejDAGDA/container-lifecycle-management-skill`
 
-Имя навыка: `maintain-server-containers`
+Имя навыка: `container-lifecycle-management`
 
-Вызов в опубликованной версии v0.5.1: `$maintain-server-containers`.
+Вызов: `$container-lifecycle-management` (версия-кандидат пакета `0.6.0`; устанавливать только после отдельного разрешённого GitHub Release).
 
-**Переименование:** GitHub-репозиторий получил универсальный суффикс `-skill` и название, соответствующее жизненному циклу контейнеров. В опубликованной версии v0.5.1 Skill ID пока остаётся `maintain-server-containers`. Отдельная проверенная миграция добавит `container-lifecycle-management` и вызов `$container-lifecycle-management`. Само переименование GitHub не обновляет установку и не создаёт алиас для нового Skill ID. Программный API `maintain-server-containers/safety-adapter/v1` сохраняется ради совместимости.
+**Миграция Skill ID:** в v0.5.1 и ранее использовались `$maintain-server-containers` и `skills/maintain-server-containers/`. В кандидате v0.6.0 каталог меняется на `skills/container-lifecycle-management/`, а вызов — на `$container-lifecycle-management`; прежняя команда не является действующим алиасом. [Пошаговое обновление](docs/CODEX-INSTALL-UPDATE.md) допустимо только после публикации и отдельного согласования. Программный API `maintain-server-containers/safety-adapter/v1` неизменен ради существующей интеграции с SandBox-Server; менять его вместе со Skill ID нельзя.
 
-**Опубликованные релизы:** проверяйте [GitHub Releases](https://github.com/SergejDAGDA/container-lifecycle-management-skill/releases); версия устанавливаемого навыка зафиксирована в `skills/maintain-server-containers/VERSION` и обоих манифестах плагина. Публикация репозитория сама по себе не обновляет ранее установленную копию Agent Skill: установка или обновление выполняются отдельно. В комплекте есть исполняемый анализатор политики, а также режимы read-only аудита, статуса и планирования. Навык содержит регламент обновления, исполняемый агентом с разрешёнными инструментами, но **пока не содержит отдельного программного исполнителя, автоматически изменяющего production Docker**. Успешная проверка YAML не доказывает готовность к обновлению.
+**Опубликованные релизы:** проверяйте [GitHub Releases](https://github.com/SergejDAGDA/container-lifecycle-management-skill/releases); версия устанавливаемого навыка зафиксирована в `skills/container-lifecycle-management/VERSION` и обоих манифестах плагина. Публикация репозитория сама по себе не обновляет ранее установленную копию Agent Skill: установка или обновление выполняются отдельно. В комплекте есть исполняемый анализатор политики, а также режимы read-only аудита, статуса и планирования. Навык содержит регламент обновления, исполняемый агентом с разрешёнными инструментами, но **пока не содержит отдельного программного исполнителя, автоматически изменяющего production Docker**. Успешная проверка YAML не доказывает готовность к обновлению.
 
 ## Аудит архитектуры и безопасности (13 октября 2026)
 
@@ -72,9 +72,9 @@ Agent Skill не означает, что PyYAML доступен каждому
 Используйте существующее локальное виртуальное окружение Codex;
 не устанавливайте пакеты на обследуемый сервер ради аудита.
 
-Отдельный workflow контроля резервных копий — `backup-audit [service]`: проверка существующих заданий, копий перед событиями обновления, полноты охвата данных и конфигурации, исторических контрольных точек, срока хранения, независимости хранилища и уведомлений **без изменений**. `backup-verify <service>` выполняет отдельно разрешённую проверку восстановления в изолированной среде. См. [backup-control.md](skills/maintain-server-containers/references/backup-control.md). Навык не создаёт собственный планировщик, не удаляет архивы автоматически и не объявляет восстановление доказанным по одному списку Restic snapshots.
+Отдельный workflow контроля резервных копий — `backup-audit [service]`: проверка существующих заданий, копий перед событиями обновления, полноты охвата данных и конфигурации, исторических контрольных точек, срока хранения, независимости хранилища и уведомлений **без изменений**. `backup-verify <service>` выполняет отдельно разрешённую проверку восстановления в изолированной среде. См. [backup-control.md](skills/container-lifecycle-management/references/backup-control.md). Навык не создаёт собственный планировщик, не удаляет архивы автоматически и не объявляет восстановление доказанным по одному списку Restic snapshots.
 
-Вторая [утилита проверки Compose-источников](skills/maintain-server-containers/scripts/compose_preflight.py)
+Вторая [утилита проверки Compose-источников](skills/container-lifecycle-management/scripts/compose_preflight.py)
 проверяет упорядоченный список файлов на **том компьютере, где
 расположены файлы**. Только явно запрошенный режим `--render`
 выполняет `docker compose config --quiet`. Режим
@@ -127,7 +127,7 @@ Agent Skill не означает, что PyYAML доступен каждому
 Совместимые с Agent Skills агенты используют канонический каталог:
 
 ```text
-skills/maintain-server-containers/
+skills/container-lifecycle-management/
   SKILL.md
   agents/openai.yaml
   references/
@@ -139,17 +139,17 @@ skills/maintain-server-containers/
 Требуется Python 3.10+. Перед YAML-проверкой запустите `doctor.py` тем же интерпретатором, что и `maintenance.py`. Используйте уже подготовленное локальное окружение с PyYAML. Для JSON policy PyYAML не нужен. Во время read-only аудита нельзя устанавливать зависимости на обследуемый сервер.
 
 ```sh
-python skills/maintain-server-containers/scripts/doctor.py --format json
-python skills/maintain-server-containers/scripts/maintenance.py --policy examples/services.yaml validate
-python skills/maintain-server-containers/scripts/maintenance.py --policy examples/services.yaml plan
-python skills/maintain-server-containers/scripts/maintenance.py --policy examples/native-policy.yaml validate
+python skills/container-lifecycle-management/scripts/doctor.py --format json
+python skills/container-lifecycle-management/scripts/maintenance.py --policy examples/services.yaml validate
+python skills/container-lifecycle-management/scripts/maintenance.py --policy examples/services.yaml plan
+python skills/container-lifecycle-management/scripts/maintenance.py --policy examples/native-policy.yaml validate
 ```
 
 Чтение реальных Docker-метаданных без изменения состояния:
 
 ```sh
-python skills/maintain-server-containers/scripts/maintenance.py --policy maintenance/services.yaml --live audit
-python skills/maintain-server-containers/scripts/maintenance.py --policy maintenance/services.yaml --live --format json status
+python skills/container-lifecycle-management/scripts/maintenance.py --policy maintenance/services.yaml --live audit
+python skills/container-lifecycle-management/scripts/maintenance.py --policy maintenance/services.yaml --live --format json status
 ```
 
 Параметры `--live` и `--format` следует ставить перед именем операции. Используются только Docker `ps` и `inspect` в режиме чтения.
@@ -159,21 +159,21 @@ python skills/maintain-server-containers/scripts/maintenance.py --policy mainten
 **Проверить сервер, ничего не меняя:**
 
 ```text
-$maintain-server-containers audit
+$container-lifecycle-management audit
 Проверь состояние контейнеров, версии, тома и риски. Никаких изменений.
 ```
 
 **Подготовить обновления:**
 
 ```text
-$maintain-server-containers plan
+$container-lifecycle-management plan
 Найди актуальные официальные версии и предложи допустимые обновления по группам.
 ```
 
 **Одна команда на разрешённую цепочку:**
 
 ```text
-$maintain-server-containers update-auto
+$container-lifecycle-management update-auto
 Обнови все допустимые политикой сервисы, сохрани данные и выполни проверки.
 Заблокированные, MANUAL и NO_TOUCH пропусти.
 ```
@@ -187,7 +187,7 @@ $maintain-server-containers update-auto
 стороннее приложение из GitHub или другого Git-источника:
 
 ```text
-$maintain-server-containers deploy-repository https://github.com/example-org/example-app
+$container-lifecycle-management deploy-repository https://github.com/example-org/example-app
 Установи приложение на сервере через Docker Compose, настрой зависимости
 и постоянное хранилище, проверь запуск и зарегистрируй в политике обслуживания.
 ```
@@ -209,7 +209,7 @@ health/smoke-проверки. Затем он фиксирует deployment в 
 условия более автоматического обслуживания. Отсутствие других
 Agent Skills не должно препятствовать установке или портить проектную память.
 
-Подробнее: [регламент первого развёртывания](skills/maintain-server-containers/references/repository-deployment.md).
+Подробнее: [регламент первого развёртывания](skills/container-lifecycle-management/references/repository-deployment.md).
 Пока это **агентный workflow**, а не реализованный в Python установщик Docker.
 
 
@@ -234,7 +234,7 @@ Linux-сервер, удалённый Linux-сервер под управле�
 а не обязательными требованиями Docker или FHS.
 
 Подробный стандарт и критерии приёмки:
-[deployment-layouts.md](skills/maintain-server-containers/references/deployment-layouts.md).
+[deployment-layouts.md](skills/container-lifecycle-management/references/deployment-layouts.md).
 
 ## Чистая переустановка существующего приложения
 
@@ -243,7 +243,7 @@ Linux-сервер, удалённый Linux-сервер под управле�
 расходного состояния:
 
 ```text
-$maintain-server-containers rebuild document-tool
+$container-lifecycle-management rebuild document-tool
 Переустанови приложение из фиксированного источника. Модели и временные
 результаты можно удалить, личные документы сохранить. Проверь будущие обновления.
 ```
@@ -262,7 +262,7 @@ Compose/исходников фактической установке, гран
 не только Docker image, но и активная конфигурация установки. После двух
 неудачных проверок приёмки прекращаются попытки точечных исправлений.
 
-Подробнее: [регламент чистой переустановки](skills/maintain-server-containers/references/clean-rebuild.md).
+Подробнее: [регламент чистой переустановки](skills/container-lifecycle-management/references/clean-rebuild.md).
 Это сценарий для агента, **не новая CLI-команда** и не обход ошибочной policy.
 
 ## Развёртывание собственных проектов
@@ -271,7 +271,7 @@ Compose/исходников фактической установке, гран
 предусмотрен режим агента:
 
 ```text
-$maintain-server-containers deploy-project local-editor
+$container-lifecycle-management deploy-project local-editor
 Разверни последнюю подтверждённую сборку, проверь приложение
 и синхронизируй записи deployment и проектную память.
 ```
@@ -293,7 +293,7 @@ $maintain-server-containers deploy-project local-editor
 безопасности. Сервис `MANUAL` требует отдельного целевого поручения,
 а обычная команда `deploy-project` **не отменяет `NO_TOUCH`**.
 
-Описание процесса: [project-deployment.md](skills/maintain-server-containers/references/project-deployment.md).
+Описание процесса: [project-deployment.md](skills/container-lifecycle-management/references/project-deployment.md).
 [Синтетический пример политики](examples/project-managed.yaml).
 Встроенный Python CLI проверяет опциональную политику
 `release_management`, но **не выполняет развёртывание**.
@@ -304,7 +304,7 @@ $maintain-server-containers deploy-project local-editor
 
 Схема v1 задаёт имена Compose-сервисов, владельца, текущий и целевой image, пользовательское состояние, необходимость backup, правила отката, health и smoke-тесты.
 
-Подробности в [описании схемы](skills/maintain-server-containers/references/policy-schema.md). Если проект уже использует свой вариант `services.yaml`, его совместимость необходимо отдельно проверить, а не предполагать по имени файла. Для дополнительных правил безопасности предусмотрен [контракт доверенного адаптера](skills/maintain-server-containers/references/safety-adapter.md). Без зарегистрированного адаптера CLI отклоняет неизвестные правила; YAML не может сам загружать Python-код.
+Подробности в [описании схемы](skills/container-lifecycle-management/references/policy-schema.md). Если проект уже использует свой вариант `services.yaml`, его совместимость необходимо отдельно проверить, а не предполагать по имени файла. Для дополнительных правил безопасности предусмотрен [контракт доверенного адаптера](skills/container-lifecycle-management/references/safety-adapter.md). Без зарегистрированного адаптера CLI отклоняет неизвестные правила; YAML не может сам загружать Python-код.
 
 
 ### Названия компонентов в группах зависимостей
@@ -313,7 +313,7 @@ $maintain-server-containers deploy-project local-editor
 Docker Compose. Для такого случая в **политике самого проекта** предусмотрено
 явное поле `component_aliases`. Агент не должен угадывать соответствие по
 дефисам, подчёркиваниям и названиям контейнеров. Пример приведён в
-[описании схемы](skills/maintain-server-containers/references/policy-schema.md)
+[описании схемы](skills/container-lifecycle-management/references/policy-schema.md)
 и [синтетической конфигурации](examples/native-policy.yaml).
 Если обязательный участник группы не определён, валидация не проходит и
 автоматическое обновление блокируется.
@@ -336,7 +336,7 @@ Docker Compose. Для такого случая в **политике само�
 
 Перед обновлением нужно определить реальные Docker volumes, bind mounts, базы данных, пользователей, загруженные файлы, ключи и настройки. Новому контейнеру должны подключаться те же persistent sources. Возврат старого image не считается достаточным откатом, если новая версия уже изменила схему БД.
 
-Существование архива не равно проверенной возможности восстановления. Подробнее см. [регламент обслуживания](skills/maintain-server-containers/references/maintenance-protocol.md).
+Существование архива не равно проверенной возможности восстановления. Подробнее см. [регламент обслуживания](skills/container-lifecycle-management/references/maintenance-protocol.md).
 
 ## Разрешения без лишних вопросов
 
@@ -357,7 +357,7 @@ Docker Compose. Для такого случая в **политике само�
 ## Разработка и тесты
 
 ```sh
-python -m pip install -r skills/maintain-server-containers/scripts/requirements.txt
+python -m pip install -r skills/container-lifecycle-management/scripts/requirements.txt
 python -m unittest discover -s tests -v
 ```
 

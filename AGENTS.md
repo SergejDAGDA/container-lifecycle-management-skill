@@ -1,6 +1,6 @@
 # Repository Guidance
 
-Canonical Agent Skill: `skills/maintain-server-containers/SKILL.md`.
+Canonical Agent Skill: `skills/container-lifecycle-management/SKILL.md`.
 
 Portable behavior belongs in that skill and its references. Service addresses, project-specific paths and live host details belong only in the consuming project's policy.
 

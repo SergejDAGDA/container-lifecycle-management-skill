@@ -6,7 +6,7 @@ import sys
 import unittest
 from pathlib import Path
 
-SCRIPTS = Path(__file__).resolve().parents[1] / "skills" / "maintain-server-containers" / "scripts"
+SCRIPTS = Path(__file__).resolve().parents[1] / "skills" / "container-lifecycle-management" / "scripts"
 sys.path.insert(0, str(SCRIPTS))
 from failure_domain_contract import assess_disaster_recovery  # noqa: E402
 from recovery_contract import validate_recovery_set  # noqa: E402

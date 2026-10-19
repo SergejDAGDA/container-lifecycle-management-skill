@@ -6,7 +6,7 @@ import unittest
 from copy import deepcopy
 from pathlib import Path
 
-SCRIPT = Path(__file__).resolve().parents[1] / "skills" / "maintain-server-containers" / "scripts"
+SCRIPT = Path(__file__).resolve().parents[1] / "skills" / "container-lifecycle-management" / "scripts"
 sys.path.insert(0, str(SCRIPT))
 import maintenance
 import native_policy

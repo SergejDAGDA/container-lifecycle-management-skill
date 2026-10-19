@@ -11,7 +11,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 MODULE = (Path(__file__).resolve().parents[1] / "skills" /
-          "maintain-server-containers" / "scripts" / "compose_preflight.py")
+          "container-lifecycle-management" / "scripts" / "compose_preflight.py")
 spec = importlib.util.spec_from_file_location("compose_preflight_rc", MODULE)
 preflight = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(preflight)

@@ -14,7 +14,7 @@ import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-sys.path.insert(0, str(HERE.parents[1] / "skills" / "maintain-server-containers" / "scripts"))
+sys.path.insert(0, str(HERE.parents[1] / "skills" / "container-lifecycle-management" / "scripts"))
 from monotonic_head_contract import SyntheticMonotonicJournal  # noqa: E402
 
 FIELDS = {

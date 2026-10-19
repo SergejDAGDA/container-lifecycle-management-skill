@@ -1,4 +1,0 @@
-interface:
-  display_name: "Maintain Server Containers"
-  short_description: "Audit, install, rebuild and maintain Docker Compose apps"
-  default_prompt: "Use $maintain-server-containers for Docker Compose audit, new installs, target-authorized rebuilds and bounded updates. Start read-only unless an operation is explicitly authorized. Select the established project deployment layout or an appropriate Linux profile; protect personal data, verify canonical source/build parity, functional results and owner access, and retain rollback sources and runtime identities. Do not bypass an invalid safety policy, NO_TOUCH or external administration. Maintain deployment-owned records; optional memory/documentation skills may assist only when installed and authorized."
