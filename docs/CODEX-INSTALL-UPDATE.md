@@ -1,3 +1,23 @@
+# Codex Desktop installation and update — Container Lifecycle Management
+
+## v0.6.0 Skill ID migration (after publication and separate approval)
+
+**Status:** The installable `0.6.0` in this development branch is a candidate, not evidence of a published release or a completed installation. Do not install from a branch, PR, floating `main` or unpublished tag.
+
+1. Confirm an independently published, non-draft GitHub Release `v0.6.0`, its exact tag-to-final-main commit and green CI at the accepted commit. Confirm the package marker, Codex/Claude manifests and the packaged skill all report `0.6.0`.
+2. Preserve the existing active user-level `maintain-server-containers` directory in a clearly identified rollback location **outside** the directories Codex scans for active skills. Record its original version, exact path and, where available, repository provenance. Do not delete the rollback copy.
+3. Stage the exact tagged `skills/container-lifecycle-management/` package outside active skills. Verify its `SKILL.md` frontmatter name, `VERSION`, `agents/openai.yaml`, contents and safety-adapter public API `maintain-server-containers/safety-adapter/v1`. Do not assume the repository rename updated Codex.
+4. In a separately approved maintenance window, move the old active skill directory out of the active skill search path and the staged new directory into its final user-level `container-lifecycle-management` path. Never leave both old and new skill IDs simultaneously active after migration.
+5. Restart Codex Desktop / refresh skill discovery and verify a **read-only** request actually activates `$container-lifecycle-management`, without touching Docker, SSH, hosts, volumes, backup storage or credentials. If activation fails, report `ENVIRONMENT` or `BLOCKER` as supported, and restore the preserved old installation; do not call the migration installed.
+6. Only after acceptance and separate authorization, update consuming project instructions that explicitly invoke the old Skill ID (notably SandBox-Server `AGENTS.md` and `testserver-operations`). Keep `maintain-server-containers/safety-adapter/v1` and its verified digest/manifest identity **unchanged**; it is an integration API, not a Skill ID.
+7. Keep the exact historical revision, installation/rollback evidence, tested invocation, and remaining consumer references in the final record. Publishing a GitHub Release, installing a skill and modifying any real server are distinct operations.
+
+## Historical installation instructions (v0.5.0 / v0.4.0)
+
+The following sections are retained for reference to their **historical published tag contents**, which used the original `skills/maintain-server-containers/` path and `$maintain-server-containers`. They are not instructions for installing candidate v0.6.0.
+
+---
+
 # Codex installation and update — Maintain Server Containers v0.5.0 (publication pending)
 
 > This section supersedes the v0.4.0-only update target **after** v0.5.0 is published. Do not install from an unmerged PR, a floating branch, or an unpublished tag. The installed baseline remains v0.4.0 until a separately approved update.
