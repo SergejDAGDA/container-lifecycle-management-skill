@@ -3,7 +3,7 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SKILL = ROOT / "skills" / "maintain-server-containers"
+SKILL = ROOT / "skills" / "container-lifecycle-management"
 CONTROL = SKILL / "references" / "backup-control.md"
 REVIEW = ROOT / "docs" / "RC-ACCEPTANCE-0.5.0.md"
 

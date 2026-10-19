@@ -15,7 +15,7 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
 
 HERE = Path(__file__).resolve().parent
-sys.path.insert(0, str(HERE.parent / "skills" / "maintain-server-containers" / "scripts"))
+sys.path.insert(0, str(HERE.parent / "skills" / "container-lifecycle-management" / "scripts"))
 from current_anchor_source_contract import (  # noqa: E402
     CLAIM, SCHEMA, ReviewedHeadReader, ReviewedHeadSource, canonical_head,
 )
