@@ -41,7 +41,7 @@ FILE_NAME = re.compile(r"^asset-[a-f0-9]{12}\.bin$")
 PROJECT = re.compile(r"^msc-pg-(original|restored)-[a-f0-9]{12}$")
 
 # Pure, read-only recovery proof contract. Not an action authorization.
-sys.path.insert(0, str(HERE.parents[1] / "skills" / "maintain-server-containers" / "scripts"))
+sys.path.insert(0, str(HERE.parents[1] / "skills" / "container-lifecycle-management" / "scripts"))
 from recovery_contract import (  # noqa: E402
     plan_retention_dry_run, validate_checkpoint, validate_recovery_set,
 )

@@ -10,7 +10,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-SCRIPTS = Path(__file__).resolve().parents[1] / "skills" / "maintain-server-containers" / "scripts"
+SCRIPTS = Path(__file__).resolve().parents[1] / "skills" / "container-lifecycle-management" / "scripts"
 sys.path.insert(0, str(SCRIPTS))
 import compose_preflight  # noqa: E402
 import doctor  # noqa: E402
