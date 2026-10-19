@@ -5,7 +5,7 @@
   },
   "plugins": [
     {
-      "name": "maintain-server-containers",
+      "name": "container-lifecycle-management",
       "source": {
         "source": "url",
         "url": "https://github.com/SergejDAGDA/container-lifecycle-management-skill.git",

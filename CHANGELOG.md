@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6.0 — candidate Skill ID migration (not yet released)
+
+- Rename the installable Agent Skill ID and directory from `maintain-server-containers` to `container-lifecycle-management` without changing Docker lifecycle operations or authorization requirements.
+- Update Codex/Claude entrypoints, plugin and Marketplace identities, active code/test paths, install guide and CI path filters.
+- Preserve the independent `maintain-server-containers/safety-adapter/v1` identifier, as well as existing Docker fixture labels, to retain compatibility with SandBox-Server and historic integration records.
+- Do not treat the repository rename as an automatic skill installation; a separately approved versioned release and fresh-session verification are required.
+
 ## 0.5.1
 
 - Require application-scoped consistent checkpoints for targeted updates and deployments; do not invoke host-wide stop-all backup scripts without separate explicit authorization.
