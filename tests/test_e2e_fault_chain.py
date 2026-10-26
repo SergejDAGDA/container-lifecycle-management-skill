@@ -10,7 +10,7 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
 
 HERE = Path(__file__).resolve().parent
-sys.path.insert(0, str(HERE.parent / "skills" / "maintain-server-containers" / "scripts"))
+sys.path.insert(0, str(HERE.parent / "skills" / "container-lifecycle-management" / "scripts"))
 sys.path.insert(0, str(HERE / "integration"))
 from ci_e2e_fault_chain import evaluate_test_chain  # noqa: E402
 from current_anchor_source_contract import (  # noqa: E402

@@ -2,7 +2,7 @@
 
 **Status:** draft and automated CI contract only. Not a deployed backup manager, Docker executor, stable API, or new v0.2.0 policy schema. See [roadmap](ROADMAP.md), [lifecycle design](LIFECYCLE-RECOVERY-DESIGN.md), and [Restic fixture ADR](ADR-001-DISPOSABLE-RESTIC.md).
 
-Source: `skills/maintain-server-containers/scripts/recovery_contract.py`. It uses only Python's standard library; no connection to Docker, Restic, storage backends, SSH, secrets or cloud APIs.
+Source: `skills/container-lifecycle-management/scripts/recovery_contract.py`. It uses only Python's standard library; no connection to Docker, Restic, storage backends, SSH, secrets or cloud APIs.
 
 ## What this contract distinguishes
 

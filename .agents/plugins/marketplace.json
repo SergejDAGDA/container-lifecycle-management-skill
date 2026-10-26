@@ -1,14 +1,14 @@
 {
-  "name": "agent-maintain-server-containers",
+  "name": "container-lifecycle-management-skill",
   "interface": {
-    "displayName": "SergejDAGDA Maintain Server Containers"
+    "displayName": "Docker Container Lifecycle Management"
   },
   "plugins": [
     {
-      "name": "maintain-server-containers",
+      "name": "container-lifecycle-management",
       "source": {
         "source": "url",
-        "url": "https://github.com/SergejDAGDA/agent-maintain-server-containers.git",
+        "url": "https://github.com/SergejDAGDA/container-lifecycle-management-skill.git",
         "ref": "main"
       },
       "policy": {

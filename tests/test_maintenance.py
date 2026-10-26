@@ -5,7 +5,7 @@ import unittest
 from pathlib import Path
 
 MODULE = (Path(__file__).resolve().parents[1] / "skills" /
-          "maintain-server-containers" / "scripts" / "maintenance.py")
+          "container-lifecycle-management" / "scripts" / "maintenance.py")
 spec = importlib.util.spec_from_file_location("maintenance", MODULE)
 maintenance = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(maintenance)

@@ -40,7 +40,7 @@ This decision distinguishes *design completeness*, *CI-backed local exercise*, *
 
 ### A-01 · P0 release blocker: missing deterministic operation executor
 
-**Evidence:** [CLI supported operations](../skills/maintain-server-containers/scripts/maintenance.py#L18-L22) contain only `validate/audit/status/plan`; [README capability table](../README.md) explicitly states no bundled production mutation executor; [roadmap E01–E04](ROADMAP.md) requires an action plan, bounded authorization, revalidation, locks, actual mutation record, health check and recovery policy.
+**Evidence:** [CLI supported operations](../skills/container-lifecycle-management/scripts/maintenance.py#L18-L22) contain only `validate/audit/status/plan`; [README capability table](../README.md) explicitly states no bundled production mutation executor; [roadmap E01–E04](ROADMAP.md) requires an action plan, bounded authorization, revalidation, locks, actual mutation record, health check and recovery policy.
 
 **Risk:** treating an agent runbook or a passing safety schema as an authorization to update or destroy Docker state bypasses the unimplemented executable gates. This is a *capability gap*, not evidence of a hidden mutation path in the CLI.
 
@@ -48,7 +48,7 @@ This decision distinguishes *design completeness*, *CI-backed local exercise*, *
 
 ### A-02 · P0 release blocker: no genuinely independent recovery or current-head authority
 
-**Evidence:** [Restic ADR](ADR-001-DISPOSABLE-RESTIC.md) accepts Restic for **local runner-only** testing; [experimental H24–H31 record](RECOVERY-CONTRACT-EXPERIMENTAL.md) explicitly declines off-host proof; [current-head source](../skills/maintain-server-containers/scripts/current_anchor_source_contract.py) and [local CAS](../skills/maintain-server-containers/scripts/monotonic_head_contract.py) rely on caller-registered code, a trusted external revision floor, and filesystem-backed SQLite. Synthetic signing material, data and test authorities are on the same runner.
+**Evidence:** [Restic ADR](ADR-001-DISPOSABLE-RESTIC.md) accepts Restic for **local runner-only** testing; [experimental H24–H31 record](RECOVERY-CONTRACT-EXPERIMENTAL.md) explicitly declines off-host proof; [current-head source](../skills/container-lifecycle-management/scripts/current_anchor_source_contract.py) and [local CAS](../skills/container-lifecycle-management/scripts/monotonic_head_contract.py) rely on caller-registered code, a trusted external revision floor, and filesystem-backed SQLite. Synthetic signing material, data and test authorities are on the same runner.
 
 **Risk:** a privileged actor can roll back both the database and locally supplied revision/anchor reference, or cause shared-fault-domain loss. Cryptographic signature verification establishes control of a configured signing key, not physical separation or the truth of a remote recovery claim.
 
@@ -56,7 +56,7 @@ This decision distinguishes *design completeness*, *CI-backed local exercise*, *
 
 ### A-03 · P0 release blocker: no production backup/restore integration across arbitrary apps
 
-**Evidence:** [recovery_contract.py](../skills/maintain-server-containers/scripts/recovery_contract.py) is read-only and its `RESTORE_TESTED` fields are declarations; [synthetic PostgreSQL fixture](../tests/integration/pg_group_harness.py) restores an isolated two-service sample; [roadmap B01–B06](ROADMAP.md) includes still-missing production adapters, complete external-state inventories, consented restore and separately authorized destructive retention.
+**Evidence:** [recovery_contract.py](../skills/container-lifecycle-management/scripts/recovery_contract.py) is read-only and its `RESTORE_TESTED` fields are declarations; [synthetic PostgreSQL fixture](../tests/integration/pg_group_harness.py) restores an isolated two-service sample; [roadmap B01–B06](ROADMAP.md) includes still-missing production adapters, complete external-state inventories, consented restore and separately authorized destructive retention.
 
 **Risk:** the synthetic PostgreSQL/SQLite proof does not establish correctness for unknown user databases, upload stores, object storage, key rotations, migration hooks or application-specific health probes.
 
@@ -64,7 +64,7 @@ This decision distinguishes *design completeness*, *CI-backed local exercise*, *
 
 ### A-04 · P1 policy-hardening: portable schema does not explicitly reject undeclared extension fields
 
-**Evidence:** [portable normalization](../skills/maintain-server-containers/scripts/maintenance.py#L61-L110) checks essential keys, service names and selected nested types, but does **not** apply a top-level or service-level unknown-field allowlist. [Portable validation](../skills/maintain-server-containers/scripts/maintenance.py#L113-L171) inspects selected gates only. By contrast [native safety adapters](../skills/maintain-server-containers/scripts/safety_adapter.py) explicitly fail on unregistered additional safety claims.
+**Evidence:** [portable normalization](../skills/container-lifecycle-management/scripts/maintenance.py#L61-L110) checks essential keys, service names and selected nested types, but does **not** apply a top-level or service-level unknown-field allowlist. [Portable validation](../skills/container-lifecycle-management/scripts/maintenance.py#L113-L171) inspects selected gates only. By contrast [native safety adapters](../skills/container-lifecycle-management/scripts/safety_adapter.py) explicitly fail on unregistered additional safety claims.
 
 **Risk:** a consuming project might assume an extra portable-policy safety rule such as `safety_invariants` or a service-specific approval setting is enforced when the validator never interprets it. Existing read-only CLI does **not** use these fields to authorize mutation, so this is a semantic assurance issue, **not a demonstrated production bypass**.
 
@@ -72,7 +72,7 @@ This decision distinguishes *design completeness*, *CI-backed local exercise*, *
 
 ### A-05 · P1 trust / supply chain: sources and installations are not reproducibly pinned
 
-**Evidence:** [unit CI](../.github/workflows/tests.yml) uses `ubuntu-latest` and GitHub Action major tags; [integration CI](../.github/workflows/integration.yml) installs `restic` from current Ubuntu APT state; [Python requirements](../skills/maintain-server-containers/scripts/requirements.txt) use open minor-version ranges. Both [plugin manifests](../plugin.json) still report v0.2.0. [Roadmap D01](ROADMAP.md) calls for signed/hashed installed artifact provenance.
+**Evidence:** [unit CI](../.github/workflows/tests.yml) uses `ubuntu-latest` and GitHub Action major tags; [integration CI](../.github/workflows/integration.yml) installs `restic` from current Ubuntu APT state; [Python requirements](../skills/container-lifecycle-management/scripts/requirements.txt) use open minor-version ranges. Both [plugin manifests](../plugin.json) still report v0.2.0. [Roadmap D01](ROADMAP.md) calls for signed/hashed installed artifact provenance.
 
 **Risk:** green CI on one day is not reproducible proof of identical dependencies, code-distributed artifacts or an installed agent skill on a server. This is not evidence that a dependency is compromised.
 
@@ -88,7 +88,7 @@ This decision distinguishes *design completeness*, *CI-backed local exercise*, *
 
 ### A-07 · P2 data minimization: portable live inspection requests more Docker data than it reports
 
-**Evidence:** [portable CLI](../skills/maintain-server-containers/scripts/maintenance.py#L174-L245) calls `docker inspect --format "{{json .}}"`, which materializes the full container inspect document in-process, then emits a limited projection. [Native CLI](../skills/maintain-server-containers/scripts/native_runtime.py#L68-L84) already uses a targeted per-field projection that avoids environment and log content.
+**Evidence:** [portable CLI](../skills/container-lifecycle-management/scripts/maintenance.py#L174-L245) calls `docker inspect --format "{{json .}}"`, which materializes the full container inspect document in-process, then emits a limited projection. [Native CLI](../skills/container-lifecycle-management/scripts/native_runtime.py#L68-L84) already uses a targeted per-field projection that avoids environment and log content.
 
 **Risk:** unnecessarily reading full inspect metadata into the agent's process increases exposure of environment-derived configuration or other sensitive operational metadata if debugging and error handling later change. This audit found **no evidence that the current normal report prints the full inspect document**.
 
@@ -96,7 +96,7 @@ This decision distinguishes *design completeness*, *CI-backed local exercise*, *
 
 ### A-08 · P2 input robustness: a few boundary types deserve adversarial tests
 
-**Evidence:** [native policy revision](../skills/maintain-server-containers/scripts/native_policy.py#L125-L128) compares with `!= 1` instead of strict integer type, so Python equality may accept boolean `True`. [Synthetic runtime JSON](../skills/maintain-server-containers/scripts/maintenance.py#L387-L415) accepts a top-level mapping but does not explicitly validate that every selected per-service runtime value is a mapping before `assessment(...).get`.
+**Evidence:** [native policy revision](../skills/container-lifecycle-management/scripts/native_policy.py#L125-L128) compares with `!= 1` instead of strict integer type, so Python equality may accept boolean `True`. [Synthetic runtime JSON](../skills/container-lifecycle-management/scripts/maintenance.py#L387-L415) accepts a top-level mapping but does not explicitly validate that every selected per-service runtime value is a mapping before `assessment(...).get`.
 
 **Risk:** malformed untrusted or test-provided data can be treated as valid structure or cause an avoidable exception rather than a fixed fail-closed result. There is no evidence this permits a Docker mutation.
 

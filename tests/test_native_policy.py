@@ -8,7 +8,7 @@ import unittest
 from pathlib import Path
 
 BASE = Path(__file__).resolve().parents[1]
-SCRIPT = BASE / "skills" / "maintain-server-containers" / "scripts"
+SCRIPT = BASE / "skills" / "container-lifecycle-management" / "scripts"
 sys.path.insert(0, str(SCRIPT))
 import maintenance  # noqa: E402
 import native_policy  # noqa: E402

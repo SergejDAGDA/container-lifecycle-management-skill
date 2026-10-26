@@ -2,12 +2,12 @@
 
 Issues and PRs are welcome. Keep the skill portable: no private infrastructure, real hostnames, secrets or project-specific service identifiers.
 
-The canonical instructions live at `skills/maintain-server-containers/SKILL.md`. Keep platform manifests versioned together. Update both `README.md` and `README.ru.md` when user-facing behavior changes.
+The canonical instructions live at `skills/container-lifecycle-management/SKILL.md`. Keep platform manifests versioned together. Update both `README.md` and `README.ru.md` when user-facing behavior changes.
 
 Run:
 
 ```sh
-python -m pip install -r skills/maintain-server-containers/scripts/requirements.txt
+python -m pip install -r skills/container-lifecycle-management/scripts/requirements.txt
 python -m unittest discover -s tests -v
 ```
 

@@ -14,7 +14,7 @@ from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
 
 HERE = Path(__file__).resolve().parent
 INTEGRATION = HERE / "integration"
-sys.path.insert(0, str(HERE.parent / "skills" / "maintain-server-containers" / "scripts"))
+sys.path.insert(0, str(HERE.parent / "skills" / "container-lifecycle-management" / "scripts"))
 sys.path.insert(0, str(INTEGRATION))
 import test_current_anchor_source_contract as fixtures  # noqa: E402
 from ci_forked_head import SyntheticProcessHead, WORKER  # noqa: E402

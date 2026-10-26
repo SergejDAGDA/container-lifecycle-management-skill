@@ -7,7 +7,7 @@ import sys
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
-SKILL = ROOT / "skills" / "maintain-server-containers"
+SKILL = ROOT / "skills" / "container-lifecycle-management"
 sys.path.insert(0, str(SKILL / "scripts"))
 import maintenance
 

@@ -15,7 +15,7 @@ from pathlib import Path
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
 
-SKILL = Path(__file__).resolve().parents[1] / "skills" / "maintain-server-containers" / "scripts"
+SKILL = Path(__file__).resolve().parents[1] / "skills" / "container-lifecycle-management" / "scripts"
 sys.path.insert(0, str(SKILL))
 from ledger_continuity_contract import (  # noqa: E402
     CLAIM, SCHEMA, canonical_anchor, read_ledger_state, verify_ledger_continuity,

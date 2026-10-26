@@ -8,7 +8,7 @@ import unittest
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-SKILL = HERE.parent / "skills" / "maintain-server-containers" / "scripts"
+SKILL = HERE.parent / "skills" / "container-lifecycle-management" / "scripts"
 sys.path.insert(0, str(SKILL))
 sys.path.insert(0, str(HERE))
 

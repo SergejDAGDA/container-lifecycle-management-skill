@@ -6,8 +6,8 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SKILL = ROOT / "skills" / "maintain-server-containers"
-VERSION = "0.5.1"
+SKILL = ROOT / "skills" / "container-lifecycle-management"
+VERSION = "0.6.0"
 
 
 class PublicReleasePackagingTests(unittest.TestCase):
@@ -19,6 +19,33 @@ class PublicReleasePackagingTests(unittest.TestCase):
                      "scripts/compose_preflight.py", "references/policy-schema.md",
                      "references/maintenance-protocol.md"):
             self.assertTrue((SKILL / path).is_file(), path)
+
+    def test_repository_identity_metadata_and_compatibility_contract(self):
+        canonical = "https://github.com/SergejDAGDA/container-lifecycle-management-skill"
+        native = json.loads((ROOT / "plugin.json").read_text(encoding="utf-8"))
+        claude = json.loads((ROOT / ".claude-plugin/plugin.json").read_text(encoding="utf-8"))
+        market = json.loads((ROOT / ".agents/plugins/marketplace.json").read_text(encoding="utf-8"))
+        self.assertEqual(market["name"], "container-lifecycle-management-skill")
+        self.assertEqual(market["plugins"][0]["source"]["url"], canonical + ".git")
+        self.assertEqual(native["name"], "container-lifecycle-management")
+        self.assertEqual(claude["name"], "container-lifecycle-management")
+        self.assertEqual(market["plugins"][0]["name"], "container-lifecycle-management")
+        for manifest in (native, claude):
+            self.assertEqual(manifest["repository"], canonical)
+            self.assertEqual(manifest["homepage"], canonical)
+        self.assertIn(
+            'API = "maintain-server-containers/safety-adapter/v1"',
+            (SKILL / "scripts/safety_adapter.py").read_text(encoding="utf-8"),
+        )
+
+    def test_skill_id_migration_preserves_safety_adapter_api(self):
+        skill = (SKILL / "SKILL.md").read_text(encoding="utf-8")
+        agent = (SKILL / "agents/openai.yaml").read_text(encoding="utf-8")
+        self.assertTrue(skill.startswith("---\nname: container-lifecycle-management\n"))
+        self.assertIn("Use $container-lifecycle-management", agent)
+        self.assertFalse((ROOT / "skills/maintain-server-containers").exists())
+        adapter = (SKILL / "scripts/safety_adapter.py").read_text(encoding="utf-8")
+        self.assertIn('API = "maintain-server-containers/safety-adapter/v1"', adapter)
 
     def test_release_notes_and_changelog_are_consistent(self):
         notes = (ROOT / "docs/releases/v0.4.0.md").read_text(encoding="utf-8")
@@ -50,11 +77,14 @@ class PublicReleasePackagingTests(unittest.TestCase):
             self.assertFalse((ROOT / obsolete).exists(), obsolete)
 
     def test_v030_historical_release_remains_documented(self):
-        workflow = (ROOT / ".github/workflows/release-v0.3.0.yml").read_text(encoding="utf-8")
+        # The published v0.3.0 tag/release is historical; its old automation
+        # must not remain active after the package and Skill ID migration.
+        self.assertFalse((ROOT / ".github/workflows/release-v0.3.0.yml").exists())
         notes = (ROOT / "docs/releases/v0.3.0.md").read_text(encoding="utf-8")
-        self.assertIn("v0.3.0", workflow)
-        self.assertIn("de1708213dbaf2895719120023d5bddfe42715e3", workflow)
+        changelog = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
         self.assertIn("v0.3.0", notes)
+        self.assertIn("de1708213dbaf2895719120023d5bddfe42715e3", changelog)
+        self.assertIn("## 0.3.0 - 2026-10-13", changelog)
 
 
 if __name__ == "__main__":

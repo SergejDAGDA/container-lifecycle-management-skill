@@ -1,14 +1,14 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
-  "name": "maintain-server-containers",
-  "version": "0.5.1",
+  "name": "container-lifecycle-management",
+  "version": "0.6.0",
   "description": "Portable Docker Compose maintenance, repeatable installation and bounded clean rebuild workflows with explicit state and source gates.",
   "author": {
     "name": "Sergej DAGDA",
     "url": "https://github.com/SergejDAGDA"
   },
-  "homepage": "https://github.com/SergejDAGDA/agent-maintain-server-containers",
-  "repository": "https://github.com/SergejDAGDA/agent-maintain-server-containers",
+  "homepage": "https://github.com/SergejDAGDA/container-lifecycle-management-skill",
+  "repository": "https://github.com/SergejDAGDA/container-lifecycle-management-skill",
   "license": "MIT",
   "keywords": [
     "docker",
@@ -21,8 +21,8 @@
   ],
   "skills": "./skills/",
   "interface": {
-    "displayName": "Maintain Server Containers",
-    "shortDescription": "Audit, install, rebuild and update Docker Compose services",
+    "displayName": "Docker Container Lifecycle Management",
+    "shortDescription": "Audit, deploy, update, rebuild and recover Docker Compose applications",
     "developerName": "Sergej DAGDA",
     "category": "Developer Tools",
     "capabilities": [

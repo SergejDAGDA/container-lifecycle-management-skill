@@ -14,7 +14,7 @@ import yaml
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "skills" / "maintain-server-containers" / "scripts"))
+sys.path.insert(0, str(ROOT / "skills" / "container-lifecycle-management" / "scripts"))
 import maintenance
 from native_policy import structure, assess_native
 from native_safety import safety_issues
