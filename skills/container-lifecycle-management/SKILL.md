@@ -5,7 +5,7 @@ description: Manage the Docker Compose application lifecycle across local, remot
 
 # Container Lifecycle Management
 
-A portable Agent Skill for Docker Compose application lifecycle management, including installation, release deployment, updates, rebuilds, backups, recovery and state reconciliation. Its invocation `$container-lifecycle-management` (previously `$maintain-server-containers`) remains unchanged for compatibility; the workflow applies to local and remote Docker environments, not only dedicated servers. The project owns its deployment files, service policy and runtime state. The skill owns the reusable procedure. Do not embed instance-specific addresses, service names, passwords or paths in the skill.
+A portable Agent Skill for Docker Compose application lifecycle management, including installation, release deployment, updates, rebuilds, backups, recovery and state reconciliation. Its new invocation is `$container-lifecycle-management` (previously `$maintain-server-containers`); the workflow applies to local and remote Docker environments, not only dedicated servers. The project owns its deployment files, service policy and runtime state. The skill owns the reusable procedure. Do not embed instance-specific addresses, service names, passwords or paths in the skill.
 
 ## Select an operation
 

@@ -3,6 +3,7 @@
 ## 0.6.0
 
 - Rename the installed Agent Skill ID and package path to `container-lifecycle-management` and update its invocation, repository documentation, plugin manifests and test/import paths.
+- Retire the obsolete active `release-v0.3.0.yml` publishing workflow; preserve the already published v0.3.0 tag, release notes and immutable historical commit without trying to republish it.
 - Keep the existing wire-level trusted safety adapter API `maintain-server-containers/safety-adapter/v1` unchanged for compatibility with consuming projects.
 - This is a breaking Skill ID migration, not a production Docker feature release. Existing installations and project-level Skill ID references require separately authorized updates after a published release and verified acceptance.
 - GitHub rename, code merge, published Release, local installation, and SandBox-Server adoption remain independently verifiable stages.

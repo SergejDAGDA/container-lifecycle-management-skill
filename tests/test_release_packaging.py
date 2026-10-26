@@ -77,11 +77,14 @@ class PublicReleasePackagingTests(unittest.TestCase):
             self.assertFalse((ROOT / obsolete).exists(), obsolete)
 
     def test_v030_historical_release_remains_documented(self):
-        workflow = (ROOT / ".github/workflows/release-v0.3.0.yml").read_text(encoding="utf-8")
+        # The published v0.3.0 tag/release is historical; its old automation
+        # must not remain active after the package and Skill ID migration.
+        self.assertFalse((ROOT / ".github/workflows/release-v0.3.0.yml").exists())
         notes = (ROOT / "docs/releases/v0.3.0.md").read_text(encoding="utf-8")
-        self.assertIn("v0.3.0", workflow)
-        self.assertIn("de1708213dbaf2895719120023d5bddfe42715e3", workflow)
+        changelog = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
         self.assertIn("v0.3.0", notes)
+        self.assertIn("de1708213dbaf2895719120023d5bddfe42715e3", changelog)
+        self.assertIn("## 0.3.0 - 2026-10-13", changelog)
 
 
 if __name__ == "__main__":
